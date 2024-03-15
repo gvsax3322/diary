@@ -1,18 +1,30 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { todoListState } from "../../store/ThemeState";
 import {
   CatImg,
+  TodoBts,
   TodoListStyle,
   TodoListUl,
 } from "../../styles/todostyles/todostyle";
 import TodoLi from "./TodoLi";
-import { todoListState } from "../../store/ThemeState";
-import { useRecoilState } from "recoil";
-import { motion } from "framer-motion";
+import TodoModal from "./TodoModal";
 
 const TodoList = () => {
   const [list, setList] = useRecoilState(todoListState);
   const [isOpen, setIsOpen] = useState(true);
   const [isOpencat, setIsOpencat] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const handleClickModal = () => {
+    setIsOpenModal(true);
+  };
+
+  const handleCloseModal = e => {
+    e.stopPropagation();
+    setIsOpenModal(false);
+  };
 
   useEffect(() => {
     if (list.length === 0) {
@@ -23,14 +35,24 @@ const TodoList = () => {
 
   return (
     <>
+      {isOpenModal && <TodoModal handleCloseModal={handleCloseModal} />}
       {isOpen && (
-        <TodoListStyle>
-          <TodoListUl>
-            {list?.map((item, index) => (
-              <TodoLi key={index} item={item} setList={setList} />
-            ))}
-          </TodoListUl>
-        </TodoListStyle>
+        <div style={{ width: "70%", display: "flex", flexDirection: "column" }}>
+          <div>
+            <TodoBts>
+              <button onClick={handleClickModal}>추가하기</button>
+            </TodoBts>
+          </div>
+          <div>
+            <TodoListStyle>
+              <TodoListUl>
+                {list?.map((item, index) => (
+                  <TodoLi key={index} item={item} setList={setList} />
+                ))}
+              </TodoListUl>
+            </TodoListStyle>
+          </div>
+        </div>
       )}
       {isOpencat && (
         <CatImg

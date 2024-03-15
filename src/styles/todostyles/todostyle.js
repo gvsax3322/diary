@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-
+import { motion } from "framer-motion";
 export const TodoWrap = styled.div`
   position: relative;
   display: flex;
@@ -41,12 +41,21 @@ export const TodoWrap = styled.div`
 
 export const TodoListStyle = styled.div`
   position: relative;
-  width: 70%;
+  width: 100%;
   height: 90%;
   padding: 10px;
   border: 1px solid;
   border-radius: 10px;
   background: #eee;
+`;
+
+export const TodoBts = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding-right: 20px;
 `;
 
 export const TodoListUl = styled.ul`
@@ -55,7 +64,6 @@ export const TodoListUl = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 25px;
-
   overflow-y: auto;
 
   li {
@@ -116,4 +124,26 @@ export const CatImg = styled.div`
     font-weight: 700;
     text-align: center;
   }
+`;
+
+export const ModalWrapper = styled.div`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+`;
+
+export const ModalContent = styled(motion.div)`
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  width: 50%;
+  height: 50%;
+  padding: 30px;
 `;
