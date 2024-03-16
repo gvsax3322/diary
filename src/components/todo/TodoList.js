@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { todoListState } from "../../store/ThemeState";
+import { useColletion } from "../../hooks/useCollection";
+import { useFirebase } from "../../hooks/useFirebase";
 import {
   CatImg,
   TodoBts,
@@ -12,70 +12,65 @@ import TodoLi from "./TodoLi";
 import TodoModal from "./TodoModal";
 
 const TodoList = () => {
-  const [list, setList] = useRecoilState(todoListState);
-  const [isOpen, setIsOpen] = useState(true);
-  const [isOpencat, setIsOpencat] = useState(false);
+  const [list, setList] = useState([]);
+
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [todoInput, setTodoInput] = useState("");
+  const { documents, error } = useColletion("feedback");
+  const { rerponse, addDocument } = useFirebase("feedback");
 
   const handleClickModal = () => {
     setIsOpenModal(true);
   };
 
-  const handleCloseModal = e => {
-    e.stopPropagation();
+  const handleCloseModal = () => {
     setIsOpenModal(false);
   };
 
+  const addFeedback = () => {
+    const feedback = {
+      id: Date.now(),
+      todo: todoInput,
+    };
+    addDocument(feedback);
+    setList([...list, feedback]);
+  };
+
   useEffect(() => {
-    if (list.length === 0) {
-      setIsOpen(false);
-      setIsOpencat(true);
+    if (rerponse.success) {
+      setTodoInput("");
     }
-  }, [list]);
+  }, [rerponse.success]);
 
   return (
     <>
-      {isOpenModal && <TodoModal handleCloseModal={handleCloseModal} />}
-      {isOpen && (
-        <div style={{ width: "70%", display: "flex", flexDirection: "column" }}>
-          <div>
-            <TodoBts>
-              <button onClick={handleClickModal}>추가하기</button>
-            </TodoBts>
-          </div>
-          <div>
-            <TodoListStyle>
-              <TodoListUl>
-                {list?.map((item, index) => (
-                  <TodoLi key={index} item={item} setList={setList} />
-                ))}
-              </TodoListUl>
-            </TodoListStyle>
-          </div>
+      {isOpenModal && (
+        <TodoModal
+          handleCloseModal={handleCloseModal}
+          addFeedback={addFeedback}
+          setTodoInput={setTodoInput}
+          todoInput={todoInput}
+          documents={documents}
+          setList={setList}
+        />
+      )}
+
+      <div style={{ width: "70%", display: "flex", flexDirection: "column" }}>
+        <div>
+          <TodoBts>
+            <button onClick={handleClickModal}>추가하기</button>
+          </TodoBts>
         </div>
-      )}
-      {isOpencat && (
-        <CatImg
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <motion.img
-            src="/assets/images/111.png"
-            alt="이미지"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          >
-            고양이 사진 넣을거임!
-          </motion.p>
-        </CatImg>
-      )}
+        <div>
+          <TodoListStyle>
+            <TodoListUl>
+              {documents?.map((item, index) => (
+                <TodoLi key={index} item={item} setList={setList} />
+              ))}
+            </TodoListUl>
+          </TodoListStyle>
+        </div>
+      </div>
     </>
   );
 };

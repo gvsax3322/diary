@@ -42,11 +42,10 @@ export const TodoWrap = styled.div`
 export const TodoListStyle = styled.div`
   position: relative;
   width: 100%;
-  height: 90%;
+  height: 400px;
   padding: 10px;
   border: 1px solid;
   border-radius: 10px;
-  background: #eee;
 `;
 
 export const TodoBts = styled.div`

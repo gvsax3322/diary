@@ -5,8 +5,19 @@ import {
   ModalWrapper,
   TodoListUl,
 } from "../../styles/todostyles/todostyle";
+import { useColletion } from "../../hooks/useCollection";
 
-const TodoModal = ({ handleCloseModal }) => {
+const TodoModal = ({
+  handleCloseModal,
+  addFeedback,
+  setTodoInput,
+  todoInput,
+}) => {
+  const handelChage = e => {
+    setTodoInput(e.target.value);
+  };
+  const { documents, error } = useColletion("feedback");
+
   return (
     <ModalWrapper onClick={handleCloseModal}>
       <ModalContent
@@ -16,16 +27,18 @@ const TodoModal = ({ handleCloseModal }) => {
         transition={{ duration: 0.5 }}
         onClick={e => e.stopPropagation()}
       >
-        <form>
-          <input type="text" placeholder="내용을 입력해주세요" />
-          <button>Add Todo</button>
-        </form>
+        <input
+          type="text"
+          value={todoInput}
+          placeholder="내용을 입력해주세요"
+          onChange={e => handelChage(e)}
+        />
+        <button onClick={addFeedback}>Add Todo</button>
+
         <TodoListUl>
-          <TodoLi>asdasda</TodoLi>
-          <TodoLi>asdasda</TodoLi>
-          <TodoLi>asdasda</TodoLi>
-          <TodoLi>asdasda</TodoLi>
-          <TodoLi>asdasda</TodoLi>
+          {documents?.map((item, index) => (
+            <TodoLi key={index} item={item} />
+          ))}
         </TodoListUl>
       </ModalContent>
     </ModalWrapper>
