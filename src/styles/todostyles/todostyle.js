@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
+
 export const TodoWrap = styled.div`
   position: relative;
   display: flex;
@@ -54,7 +55,6 @@ export const TodoBts = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
-  padding-right: 20px;
 `;
 
 export const TodoListUl = styled.ul`
@@ -139,10 +139,38 @@ export const ModalWrapper = styled.div`
 `;
 
 export const ModalContent = styled(motion.div)`
+  position: relative;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   width: 50%;
   height: 50%;
   padding: 30px;
+`;
+
+export const EditBt = styled.button`
+  width: 50px;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+`;
+
+export const AddTodoBt = styled.button`
+  background: #628fe7;
+  width: 100px;
+  border-radius: 5px;
+  border: none;
+  height: 30px;
+  cursor: pointer;
+  border: 1px solid;
+`;
+
+export const TodoInputs = styled.input`
+  width: 80%;
+  height: 30px;
+  padding-left: 5px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  background: transparent;
+  font-size: 1.5rem;
 `;

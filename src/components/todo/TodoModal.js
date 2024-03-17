@@ -1,6 +1,7 @@
 import React from "react";
 import TodoLi from "./TodoLi";
 import {
+  AddTodoBt,
   ModalContent,
   ModalWrapper,
   TodoListUl,
@@ -27,13 +28,26 @@ const TodoModal = ({
         transition={{ duration: 0.5 }}
         onClick={e => e.stopPropagation()}
       >
-        <input
-          type="text"
-          value={todoInput}
-          placeholder="내용을 입력해주세요"
-          onChange={e => handelChage(e)}
-        />
-        <button onClick={addFeedback}>Add Todo</button>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <input
+            style={{
+              width: "80%",
+              height: 30,
+              fontSize: "1.5rem",
+            }}
+            type="text"
+            value={todoInput}
+            placeholder="내용을 입력해주세요"
+            onChange={e => handelChage(e)}
+          />
+          <AddTodoBt onClick={addFeedback}>추가 하기</AddTodoBt>
+        </div>
 
         <TodoListUl>
           {documents?.map((item, index) => (
