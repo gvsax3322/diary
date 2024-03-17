@@ -5,6 +5,7 @@ import { themeMode } from "./store/ThemeState";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled";
 import Todo from "./components/todo/Todo";
+import Question from "./components/ question/ Question";
 
 const App = () => {
   const theme = useRecoilValue(themeMode);
@@ -31,7 +32,9 @@ const App = () => {
         <h1>짭 노션 만들기</h1>
         <ToggleTheme />
         <Todo />
-        <h2>고양이 API</h2>
+        <h2>면접 질문 만들기</h2>
+
+        <Question />
         <h2>글쓰기</h2>
         <h2>달략</h2>
         <h2>그래프</h2>
