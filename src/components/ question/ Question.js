@@ -1,16 +1,19 @@
-import axios from "axios";
 import React, { useState } from "react";
+import { getCat } from "../../api/catapi";
 import { useColletion } from "../../hooks/useCollection";
-import { Cat, Questionswrap } from "../../styles/ questionstyle/ questionstyle";
+import {
+  Cat,
+  QuestionBt,
+  Questionswrap,
+} from "../../styles/ questionstyle/ questionstyle";
 import { TodoWrap } from "../../styles/todostyles/todostyle";
 
 const Question = () => {
   const { documents } = useColletion("question");
   const [randomQuestion, setRandomQuestion] = useState("");
   const [isOpen, setIsOpen] = useState(true);
-  const [catImage, setCatImage] = useState("");
+  const [catImage, setCatImage] = React.useState("");
   const questions = documents ? documents[0]?.ask : [];
-  const [isOpenCat, setIsOpenCat] = useState(true);
 
   const handleClikAsk = () => {
     if (questions.length > 0) {
@@ -19,9 +22,9 @@ const Question = () => {
     }
   };
 
-  const handleChangeCat = () => {
-    setCatImage("https://cataas.com/cat/gif");
-    setIsOpenCat(false);
+  const handleChangeCat = async () => {
+    const newImage = await getCat();
+    setCatImage(newImage);
   };
 
   return (
@@ -30,8 +33,10 @@ const Question = () => {
         <Questionswrap>
           <p>{randomQuestion}</p>
           <input />
-          <button onClick={handleClikAsk}>새 질문 받기</button>
-          <button onClick={() => setIsOpen(false)}>답하기</button>
+          <QuestionBt>
+            <button onClick={handleClikAsk}>새 질문 받기</button>
+            <button onClick={() => setIsOpen(false)}>답하기</button>
+          </QuestionBt>
         </Questionswrap>
       ) : (
         <Questionswrap>
@@ -41,13 +46,9 @@ const Question = () => {
       )}
 
       <Cat>
-        {!isOpenCat && (
-          <>
-            <img src={catImage} alt="" style={{ width: "500px" }} />
-            <p style={{ fontSize: "1.5rem" }}>냥이 보고 힘내냥!😸</p>
-          </>
-        )}
-        {isOpenCat && <button onClick={handleChangeCat}>고양이 보기😸</button>}
+        <img src={catImage} alt="" style={{ width: "200px" }} />
+        <p style={{ fontSize: "1.5rem" }}>냥이 보고 힘내냥!😸</p>
+        <button onClick={handleChangeCat}>고양이 보기😸</button>
       </Cat>
     </TodoWrap>
   );

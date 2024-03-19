@@ -6,6 +6,7 @@ export const Questionswrap = styled.div`
   width: 45%;
   gap: 20px;
   align-items: center;
+
   p {
     height: 200px;
     font-size: 2rem;
@@ -25,6 +26,13 @@ export const Questionswrap = styled.div`
     border-radius: 5px;
     cursor: pointer;
   }
+`;
+
+export const QuestionBt = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
 `;
 
 export const Cat = styled.div`

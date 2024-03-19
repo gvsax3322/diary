@@ -7,14 +7,18 @@ export const TodoWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 500px;
+  height: 100%;
   border: 1px solid;
   border-radius: 20px;
   padding: 30px;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
   .wrap {
     position: relative;
     width: 300px;
-    height: 100%;
+    min-height: 450px;
     overflow: hidden;
     border: 1px solid;
     border-top: none;
