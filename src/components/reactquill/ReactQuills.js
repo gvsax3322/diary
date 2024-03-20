@@ -1,43 +1,115 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { storage } from "../../fb/Firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useColletion } from "../../hooks/useCollection";
+import { useFirebase } from "../../hooks/useFirebase";
 import DOMPurify from "dompurify";
-import { TodoWrap } from "../../styles/todostyles/todostyle";
+import { EditBt, TodoWrap } from "../../styles/todostyles/todostyle";
+import {
+  EditRead,
+  QuillBt,
+  QuillWrap,
+} from "../../styles/quillstyle/quillstyle";
 
 const ReactQuills = () => {
-  // const [value, setValue] = useState("");
-  // useEffect(() => {
-  //   console.log(value);
-  // }, [value]);
+  const quillRef = useRef(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+  const { documents, error } = useColletion("editor");
+  const { rerponse, addDocument } = useFirebase("editor");
 
-  const modules = {
-    toolbar: {
-      container: [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        [{ font: [] }],
-        [{ align: [] }],
-        ["bold", "italic", "underline", "strike", "blockquote"],
-        [{ list: "ordered" }, { list: "bullet" }, "link"],
-        [
-          {
-            color: [],
-          },
-          { background: [] },
-        ],
-        ["image"],
-        ["clean"],
-      ],
-    },
+  const addEditor = () => {
+    const editor = {
+      id: Date.now(),
+      title,
+      content,
+    };
+    addDocument(editor);
   };
+
+  const imageHandler = () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.addEventListener("change", async () => {
+      const editor = quillRef.current.getEditor();
+      const file = input.files[0];
+      const range = editor.getSelection(true);
+      try {
+        const storageRef = ref(storage, `image/${Date.now()}`);
+        await uploadBytes(storageRef, file).then(snapshot => {
+          getDownloadURL(snapshot.ref).then(url => {
+            editor.insertEmbed(range.index, "image", url);
+            editor.setSelection(range.index + 1);
+            setImageUrl(url);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ font: [] }],
+          [{ align: [] }],
+          ["bold", "italic", "underline", "strike", "blockquote"],
+          [{ list: "ordered" }, { list: "bullet" }, "link"],
+          [
+            {
+              color: [],
+            },
+            { background: [] },
+          ],
+          ["image"],
+          ["clean"],
+        ],
+        handlers: { image: imageHandler },
+      },
+    }),
+    [],
+  );
 
   return (
     <TodoWrap>
-      <div>
-        <ReactQuill modules={modules} />
-      </div>
+      <QuillWrap>
+        <input
+          type="text"
+          placeholder="제목을 작성하새요"
+          onChange={e => setTitle(e.target.value)}
+        />
+        <ReactQuill
+          style={{ width: "100%", height: "500px" }}
+          placeholder="내용을 작성하새요"
+          theme="snow"
+          ref={quillRef}
+          value={content}
+          onChange={setContent}
+          modules={modules}
+        />
+        <QuillBt onClick={addEditor}>제출 하기</QuillBt>
+      </QuillWrap>
 
-      {/* <div>{value}</div>
-      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value) }} /> */}
+      {/* <EditRead>
+        {documents?.map((item, index) => (
+          <div
+            key={index}
+            className="content-container"
+            style={{ width: 300, height: 300 }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(item?.content),
+            }}
+          />
+        ))}
+      </EditRead> */}
     </TodoWrap>
   );
 };

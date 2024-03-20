@@ -7,7 +7,7 @@ export const TodoWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 100%;
+  min-height: 500px;
   border: 1px solid;
   border-radius: 20px;
   padding: 30px;
