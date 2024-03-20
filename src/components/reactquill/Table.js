@@ -19,7 +19,7 @@ const Table = () => {
   };
 
   const handleClickModal = item => {
-    setSelectedItem(item); // 선택된 항목 설정
+    setSelectedItem(item);
   };
 
   return (
@@ -47,7 +47,6 @@ const Table = () => {
               const dateString = date.toDateString();
               return (
                 <tr key={item.id}>
-                  {/* 각 행을 클릭할 때 선택된 항목 정보 저장 */}
                   <td onClick={() => handleClickModal(item)}>{dateString}</td>
                   <td>{item.title}</td>
                   <td>
