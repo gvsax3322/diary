@@ -1,24 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import React, { useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { storage } from "../../fb/Firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { useColletion } from "../../hooks/useCollection";
 import { useFirebase } from "../../hooks/useFirebase";
-import DOMPurify from "dompurify";
-import { EditBt, TodoWrap } from "../../styles/todostyles/todostyle";
-import {
-  EditRead,
-  QuillBt,
-  QuillWrap,
-} from "../../styles/quillstyle/quillstyle";
+import { QuillBt, QuillWrap } from "../../styles/quillstyle/quillstyle";
 
 const ReactQuills = () => {
   const quillRef = useRef(null);
   const [imageUrl, setImageUrl] = useState("");
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
-  const { documents, error } = useColletion("editor");
   const { rerponse, addDocument } = useFirebase("editor");
 
   const addEditor = () => {
@@ -79,7 +71,7 @@ const ReactQuills = () => {
   );
 
   return (
-    <TodoWrap>
+    <>
       <QuillWrap>
         <input
           type="text"
@@ -110,7 +102,7 @@ const ReactQuills = () => {
           />
         ))}
       </EditRead> */}
-    </TodoWrap>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { appFireStore } from "../fb/fbconfig";
 
@@ -9,9 +9,13 @@ export const useColletion = transaction => {
 
   // collection 이 변경된 경우 실행하도록 설정
   useEffect(() => {
+    const q = query(
+      collection(appFireStore, transaction),
+      orderBy("createdTime", "desc"),
+    );
     // 참조 = collection(FB프로젝트, collection 폴더명 )
     const unsubscribe = onSnapshot(
-      collection(appFireStore, transaction),
+      q,
       snapshot => {
         let result = [];
         console.log(snapshot);

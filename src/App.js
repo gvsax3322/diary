@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import Todo from "./components/todo/Todo";
 import Question from "./components/ question/ Question";
 import ReactQuills from "./components/reactquill/ReactQuills";
+import Editor from "./components/reactquill/Editor";
 
 const App = () => {
   const theme = useRecoilValue(themeMode);
@@ -36,7 +37,7 @@ const App = () => {
         <h2>면접 질문 만들기</h2>
 
         <Question />
-        <ReactQuills />
+        <Editor />
         <h2>달략</h2>
         <h2>그래프</h2>
       </div>

@@ -1,4 +1,10 @@
-import { addDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { appFireStore, timeStamp } from "../fb/fbconfig";
 import { useReducer } from "react";
 
@@ -38,27 +44,32 @@ const storeReducer = (state, action) => {
         success: false,
         error: action.payload,
       };
+    case "deleteDoc":
+      return {
+        ...state,
+        isPending: false,
+        document: null,
+        success: true,
+        error: null,
+      };
+    case "editDoc":
+      return {
+        ...state,
+        isPending: false,
+        document: null,
+        success: true,
+        error: null,
+      };
     default:
-      // 최소 아마 작업을 하지 않더라도 리듀서 함수는 state 즉, 원본이라도 리턴해야해요.
       return state;
   }
 };
 
-// 매개변수 transaction 은 Collectin (자료를 보관할 폴더라고 생각)
-// 사용예: useFirebase("feeback")
-// 사용예: useFirebase("freeboard")
 export const useFirebase = transaction => {
-  // useReducer 는 dispathc 함수를 실행후 결과값 변경 및 보관
-  // const [rerponse, dispatch] = useReducer(리듀서함수, 초기값);
   const [rerponse, dispatch] = useReducer(storeReducer, initState);
 
-  // FB 에 Collection 만들라고 요청
-  // colRef 는 FB 가 만들어준 Collection 의 참조 변수
-  // collection(저장소참조, collectin 이름 - 폴더이름)
   const colRef = collection(appFireStore, transaction);
 
-  // collection 없으면 자동으로 생성
-  // Document (문서파일) 를 저장한다.
   const addDocument = async doc => {
     dispatch({ type: "isPending" });
     try {
@@ -73,9 +84,33 @@ export const useFirebase = transaction => {
       dispatch({ type: "error", payload: error.message });
     }
   };
-
   // Document (문서파일) 를 삭제한다.
-  const deleteDocument = () => {};
+  const deleteDocument = async id => {
+    dispatch({ type: "isPending" });
+    try {
+      // 어떤 FB Document 인가를 알려주는 메서드
+      // FB 에서 아이디를 보내면 찾아주는 메서드 doc()
+      const docRef = await deleteDoc(doc(colRef, id));
+      dispatch({ type: "deleteDoc" });
+    } catch (error) {
+      dispatch({ type: "error", payload: error.message });
+    }
+  };
 
-  return { rerponse, addDocument, deleteDocument };
+  // Document 업데이트
+  const editDocument = async (id, data) => {
+    dispatch({ type: "isPending" });
+    try {
+      // FB 문서를 참조
+      // 수정을 하기 위해서는 collection 참조 및 , 문서 id 를 전달
+      const docRef = doc(appFireStore, transaction, id);
+      // 이후 업데이트
+      await updateDoc(docRef, data);
+      dispatch({ type: "editDoc" });
+    } catch (error) {
+      dispatch({ type: "error", payload: error.message });
+    }
+  };
+
+  return { rerponse, addDocument, deleteDocument, editDocument };
 };
