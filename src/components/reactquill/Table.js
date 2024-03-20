@@ -8,30 +8,55 @@ import {
   Tablestyle,
 } from "../../styles/quillstyle/quillstyle";
 import EditorModal from "./EditorModal";
+import EditorModalAdd from "./EditorModalAdd";
+import EditorModalEdit from "./EditorModalEdit";
 
 const Table = () => {
   const { documents } = useColletion("editor");
-  const { deleteDocument } = useFirebase("editor");
+  const { deleteDocument, editDocument } = useFirebase("editor");
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isOpenQuillRead, setIsOpenQuillRead] = useState(false);
+  const [isOpenQuill, setIsOpenQuill] = useState(false);
+  const [isOpenQuillEdit, setIsOpenQuillEdit] = useState(false);
 
   const handleChangeD = _id => {
     deleteDocument(_id);
   };
 
+  const handleClickModalAdd = () => {
+    setIsOpenQuill(true);
+  };
+
+  const handleChangeE = item => {
+    setSelectedItem(item);
+    setIsOpenQuillEdit(true);
+  };
+
   const handleClickModal = item => {
     setSelectedItem(item);
+    setIsOpenQuillRead(true);
   };
 
   return (
     <>
-      {selectedItem && (
+      {isOpenQuillRead && (
         <EditorModal
           selectedItem={selectedItem}
-          onClose={() => setSelectedItem(null)}
+          onClose={() => setIsOpenQuillRead(false)}
+        />
+      )}
+      {isOpenQuill && <EditorModalAdd onClose={() => setIsOpenQuill(false)} />}
+      {isOpenQuillEdit && (
+        <EditorModalEdit
+          onClose={() => setIsOpenQuillEdit(false)}
+          selectedItem={selectedItem}
         />
       )}
       <TableContainer>
         <h2>게시판 목록</h2>
+        <div className="addbt">
+          <button onClick={handleClickModalAdd}>등록</button>
+        </div>
         <Tablestyle>
           <thead>
             <tr>
@@ -52,7 +77,7 @@ const Table = () => {
                   <td>
                     <TableE
                       onClick={() => {
-                        //   handleChangeE(item.id);
+                        handleChangeE(item);
                       }}
                     >
                       수정

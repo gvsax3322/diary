@@ -43,6 +43,21 @@ export const TableContainer = styled.div`
   width: 100%;
   h2 {
     margin-bottom: 20px;
+    text-align: center;
+  }
+  .addbt {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 10px;
+    button {
+      position: relative;
+      width: 10%;
+      height: 30px;
+      background: skyblue;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
   }
 `;
 
@@ -96,7 +111,7 @@ export const EditorModalStyle = styled(motion.div)`
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  width: 50%;
+  width: 80%;
   height: 80%;
   padding: 30px;
   overflow-y: auto;

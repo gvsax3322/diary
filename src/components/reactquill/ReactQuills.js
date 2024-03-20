@@ -6,7 +6,7 @@ import { storage } from "../../fb/Firebase";
 import { useFirebase } from "../../hooks/useFirebase";
 import { QuillBt, QuillWrap } from "../../styles/quillstyle/quillstyle";
 
-const ReactQuills = () => {
+const ReactQuills = ({ onClose }) => {
   const quillRef = useRef(null);
   const [imageUrl, setImageUrl] = useState("");
   const [content, setContent] = useState("");
@@ -20,6 +20,7 @@ const ReactQuills = () => {
       content,
     };
     addDocument(editor);
+    onClose();
   };
 
   const imageHandler = () => {
@@ -71,38 +72,23 @@ const ReactQuills = () => {
   );
 
   return (
-    <>
-      <QuillWrap>
-        <input
-          type="text"
-          placeholder="제목을 작성하새요"
-          onChange={e => setTitle(e.target.value)}
-        />
-        <ReactQuill
-          style={{ width: "100%", height: "500px" }}
-          placeholder="내용을 작성하새요"
-          theme="snow"
-          ref={quillRef}
-          value={content}
-          onChange={setContent}
-          modules={modules}
-        />
-        <QuillBt onClick={addEditor}>제출 하기</QuillBt>
-      </QuillWrap>
-
-      {/* <EditRead>
-        {documents?.map((item, index) => (
-          <div
-            key={index}
-            className="content-container"
-            style={{ width: 300, height: 300 }}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(item?.content),
-            }}
-          />
-        ))}
-      </EditRead> */}
-    </>
+    <QuillWrap>
+      <input
+        type="text"
+        placeholder="제목을 작성하새요"
+        onChange={e => setTitle(e.target.value)}
+      />
+      <ReactQuill
+        style={{ width: "100%", height: "500px" }}
+        placeholder="내용을 작성하새요"
+        theme="snow"
+        ref={quillRef}
+        value={content}
+        onChange={setContent}
+        modules={modules}
+      />
+      <QuillBt onClick={addEditor}>제출 하기</QuillBt>
+    </QuillWrap>
   );
 };
 

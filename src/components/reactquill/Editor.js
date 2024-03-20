@@ -2,14 +2,12 @@ import React from "react";
 import ReactQuills from "./ReactQuills";
 import Table from "./Table";
 import { TodoWrap } from "../../styles/todostyles/todostyle";
-import EditorRead from "./\bEditorRead";
 
 const Editor = () => {
   return (
     <TodoWrap>
-      <ReactQuills />
+      {/* <ReactQuills /> */}
       <Table />
-      {/* <EditorRead /> */}
     </TodoWrap>
   );
 };
