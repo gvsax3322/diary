@@ -14,10 +14,12 @@ const EditorModal = ({ selectedItem, onClose }) => {
         onClick={e => e.stopPropagation()}
       >
         <EditRead>
-          <h2 style={{ textAlign: "center" }}>{selectedItem?.title}</h2>
+          <h2 style={{ textAlign: "center", color: "black" }}>
+            {selectedItem?.title}
+          </h2>
           <div
             className="content-container"
-            style={{ width: 300, height: 300 }}
+            style={{ width: 300, height: 300, color: "black" }}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(selectedItem?.content),
             }}

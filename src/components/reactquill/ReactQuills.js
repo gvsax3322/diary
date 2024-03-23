@@ -79,7 +79,7 @@ const ReactQuills = ({ onClose }) => {
         onChange={e => setTitle(e.target.value)}
       />
       <ReactQuill
-        style={{ width: "100%", height: "500px" }}
+        style={{ width: "100%", height: "500px", color: "black" }}
         placeholder="내용을 작성하새요"
         theme="snow"
         ref={quillRef}

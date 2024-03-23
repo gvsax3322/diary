@@ -6,7 +6,6 @@ import { TodoWrap } from "../../styles/todostyles/todostyle";
 const Editor = () => {
   return (
     <TodoWrap>
-      {/* <ReactQuills /> */}
       <Table />
     </TodoWrap>
   );

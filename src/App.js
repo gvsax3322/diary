@@ -1,13 +1,13 @@
+import styled from "@emotion/styled";
+import { motion } from "framer-motion";
 import React from "react";
 import { useRecoilValue } from "recoil";
-import ToggleTheme from "./components/ToggleTheme";
-import { themeMode } from "./store/ThemeState";
-import { motion } from "framer-motion";
-import styled from "@emotion/styled";
-import Todo from "./components/todo/Todo";
 import Question from "./components/ question/ Question";
-import ReactQuills from "./components/reactquill/ReactQuills";
+import ToggleTheme from "./components/ToggleTheme";
+import ReactCalendar from "./components/calendar/ReactCalendar";
 import Editor from "./components/reactquill/Editor";
+import Todo from "./components/todo/Todo";
+import { themeMode } from "./store/ThemeState";
 
 const App = () => {
   const theme = useRecoilValue(themeMode);
@@ -38,7 +38,7 @@ const App = () => {
 
         <Question />
         <Editor />
-        <h2>달략</h2>
+        <ReactCalendar />
         <h2>그래프</h2>
       </div>
     </StyledContainer>

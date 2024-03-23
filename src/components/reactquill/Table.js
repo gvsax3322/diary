@@ -73,7 +73,7 @@ const Table = () => {
               return (
                 <tr key={item.id}>
                   <td onClick={() => handleClickModal(item)}>{dateString}</td>
-                  <td>{item.title}</td>
+                  <td onClick={() => handleClickModal(item)}>{item.title}</td>
                   <td>
                     <TableE
                       onClick={() => {
