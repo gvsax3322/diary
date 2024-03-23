@@ -1,28 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyledCalendar,
   StyledCalendarWrapper,
 } from "../../styles/calendarstyle/calendarstyle";
 import moment from "moment";
 import { TodoWrap } from "../../styles/todostyles/todostyle";
+import { useFirebase } from "../../hooks/useFirebase";
+import { useColletion } from "../../hooks/useCollection";
+import CalendarModal from "./CalendarModal";
 
 const ReactCalendar = () => {
   const today = new Date();
   const [date, setDate] = useState(today);
   const [schedule, setSchedule] = useState({});
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [textCalendr, setTextCalendr] = useState("");
+  const { addDocument, editDocument } = useFirebase("calender");
+  const { documents } = useColletion("calender");
   const handleDateChange = newDate => {
     setDate(newDate);
   };
 
+  useEffect(() => {
+    if (documents) {
+      const scheduleData = {};
+      documents.forEach(({ date, schedule }) => {
+        if (!scheduleData[date]) {
+          scheduleData[date] = [];
+        }
+        scheduleData[date] = [...scheduleData[date], ...schedule];
+      });
+      setSchedule(scheduleData);
+    }
+  }, [documents]);
+
   const handleDateClick = date => {
-    const newSchedule = prompt("일정을 입력하세요:");
-    if (newSchedule) {
-      const dateString = moment(date).format("YYYY-MM-DD");
-      setSchedule(prevSchedule => ({
-        ...prevSchedule,
-        [dateString]: [...(prevSchedule[dateString] || []), newSchedule],
-      }));
+    const newSchedule = textCalendr;
+    setIsOpen(true);
+    const dateString = moment(date).format("YYYY-MM-DD");
+
+    if (documents) {
+      const clickedDocument = documents.find(doc => doc?.date === dateString);
+      if (clickedDocument) {
+        if (textCalendr !== null && textCalendr.trim() === "") {
+          return;
+        }
+        const updatedDocument = {
+          schedule: [...clickedDocument.schedule, newSchedule],
+        };
+        editDocument(clickedDocument.id, updatedDocument);
+      } else {
+        if (textCalendr !== null && textCalendr.trim() === "") {
+          return;
+        }
+        addDocument({
+          date: dateString,
+          schedule: [newSchedule],
+        });
+      }
     }
   };
 
@@ -33,14 +68,22 @@ const ReactCalendar = () => {
 
   return (
     <TodoWrap>
+      {isOpen && (
+        <CalendarModal
+          onClose={() => setIsOpen(false)}
+          setTextCalendr={setTextCalendr}
+          handleDateClick={handleDateClick}
+          date={date}
+        />
+      )}
       <StyledCalendarWrapper>
         <StyledCalendar
           value={date}
           onChange={handleDateChange}
           onClickDay={handleDateClick}
-          formatDay={(locale, date) => moment(date).format("D")}
-          formatYear={(locale, date) => moment(date).format("YYYY")}
-          formatMonthYear={(locale, date) => moment(date).format("YYYY. MM")}
+          formatDay={date => moment(date).format("D")}
+          formatYear={date => moment(date).format("YYYY")}
+          formatMonthYear={date => moment(date).format("YYYY. MM")}
           calendarType="gregory"
           showNeighboringMonth={false}
           next2Label={null}

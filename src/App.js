@@ -31,15 +31,11 @@ const App = () => {
       transition={{ duration: 1 }}
     >
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-        <h1>짭 노션 만들기</h1>
         <ToggleTheme />
         <Todo />
-        <h2>면접 질문 만들기</h2>
-
         <Question />
         <Editor />
         <ReactCalendar />
-        <h2>그래프</h2>
       </div>
     </StyledContainer>
   );
