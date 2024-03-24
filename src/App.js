@@ -21,6 +21,11 @@ const App = () => {
     h1 {
       margin: 0;
     }
+    h2 {
+      width: 100%;
+      text-align: center;
+      padding: 30px;
+    }
   `;
 
   return (
@@ -32,9 +37,13 @@ const App = () => {
     >
       <div style={{ maxWidth: 1140, margin: "0 auto" }}>
         <ToggleTheme />
+        <h2>Todo</h2>
         <Todo />
+        <h2>면접 연습</h2>
         <Question />
+        <h2>일기장</h2>
         <Editor />
+        <h2>일정</h2>
         <ReactCalendar />
       </div>
     </StyledContainer>

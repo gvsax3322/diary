@@ -14,9 +14,12 @@ const ReactCalendar = () => {
   const [date, setDate] = useState(today);
   const [schedule, setSchedule] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [aaa, setAaa] = useState(null);
+  const [calenderid, setCalenderid] = useState("");
   const [textCalendr, setTextCalendr] = useState("");
   const { addDocument, editDocument } = useFirebase("calender");
   const { documents } = useColletion("calender");
+
   const handleDateChange = newDate => {
     setDate(newDate);
   };
@@ -41,6 +44,8 @@ const ReactCalendar = () => {
 
     if (documents) {
       const clickedDocument = documents.find(doc => doc?.date === dateString);
+      setCalenderid(clickedDocument?.id);
+      setAaa(clickedDocument?.schedule);
       if (clickedDocument) {
         if (textCalendr !== null && textCalendr.trim() === "") {
           return;
@@ -74,6 +79,8 @@ const ReactCalendar = () => {
           setTextCalendr={setTextCalendr}
           handleDateClick={handleDateClick}
           date={date}
+          aaa={aaa}
+          calenderid={calenderid}
         />
       )}
       <StyledCalendarWrapper>

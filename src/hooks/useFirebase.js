@@ -77,7 +77,7 @@ export const useFirebase = transaction => {
       const createdTime = timeStamp.fromDate(new Date());
       // FB 의 API 문서 중에 문서 추가 기능을 입력
       const docRef = await addDoc(colRef, { ...doc, createdTime });
-      console.log(docRef);
+
       // const action = { type: 'addDoc', payload: docRef }
       dispatch({ type: "addDoc", payload: docRef });
     } catch (error) {
