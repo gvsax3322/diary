@@ -88,9 +88,9 @@ const ReactCalendar = () => {
           value={date}
           onChange={handleDateChange}
           onClickDay={handleDateClick}
-          formatDay={date => moment(date).format("D")}
-          formatYear={date => moment(date).format("YYYY")}
-          formatMonthYear={date => moment(date).format("YYYY. MM")}
+          formatDay={(locale, date) => moment(date).format("D")}
+          formatYear={(locale, date) => moment(date).format("YYYY")}
+          formatMonthYear={(locale, date) => moment(date).format("YYYY. MM")}
           calendarType="gregory"
           showNeighboringMonth={false}
           next2Label={null}
